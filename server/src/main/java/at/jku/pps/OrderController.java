@@ -10,55 +10,55 @@ import java.util.Optional;
 @RestController
 public class OrderController {
 
-    private final OrderRepository repository;
+    private OrderRepository repository;
 
     public OrderController(final OrderRepository repository){
         this.repository = repository;
     }
 
     @GetMapping("/orders")
-    public List<Order> getOrders(){
+    public List<ProductionOrder> getOrders(){
         return repository.findAll();
     }
 
-    @PostMapping("/orders")
-    public ResponseEntity<Order> newOrder(int identificationNumber, String description, int priority, String machineDescription){
+    @PostMapping("/newOrder")
+    public ResponseEntity<ProductionOrder> newOrder(String description, int priority, String machineDescription){
         if (description == null ||
                 description.isBlank() ||
                 machineDescription == null ||
                 machineDescription.isBlank() ||
-                priority == 0 || identificationNumber == 0){
+                priority == 0){
             return ResponseEntity.badRequest().build();
         }
-        final Order order = new Order(identificationNumber, description, priority, machineDescription);
+        final ProductionOrder order = new ProductionOrder(description, priority, machineDescription);
         repository.save(order);
         return ResponseEntity.ok(order);
     }
 
-    @DeleteMapping("/orders")
-    public ResponseEntity<Order> deleteOrder(Long id){
+    @DeleteMapping("/deleteAllOrders")
+    public ResponseEntity<ProductionOrder> deleteOrder(Long id){
         repository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    //@DeleteMapping("/order")
-    //public ResponseEntity<Order> deleteAllOrders(){
-        //repository.deleteAll();
-        //return ResponseEntity.ok().build();
-    //}
+    @DeleteMapping("/deleteOrder")
+    public ResponseEntity<ProductionOrder> deleteAllOrders(){
+        repository.deleteAll();
+        return ResponseEntity.ok().build();
+    }
 
-    @PutMapping("/orders")
-    public ResponseEntity<Order> changeMachineDescription(Long id, String newMachineDescription){
+    @PutMapping("/changeOrderDescription")
+    public ResponseEntity<ProductionOrder> changeMachineDescription(Long id, String newMachineDescription){
         repository.findById(id).ifPresent(o -> o.setMachineDescription(newMachineDescription));
-        final Optional<Order> order = repository.findById(id);
+        final Optional<ProductionOrder> order = repository.findById(id);
         repository.save(order.get());
         return ResponseEntity.ok(order.get());
     }
 
-    @PutMapping("/orders")
-    public ResponseEntity<Order> changePriority(Long id, int newPriority){
+    @PutMapping("/changeOrderPriority")
+    public ResponseEntity<ProductionOrder> changePriority(Long id, int newPriority){
         repository.findById(id).ifPresent(o -> o.setPriority(newPriority));
-        final Optional<Order> order = repository.findById(id);
+        final Optional<ProductionOrder> order = repository.findById(id);
         repository.save(order.get());
         return ResponseEntity.ok(order.get());
     }

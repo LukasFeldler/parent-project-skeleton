@@ -7,31 +7,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Order {
-    private int identificationNumber;
+public class ProductionOrder {
+
     private String description;
     private int priority;
     private String machineDescription;
+    @Id
+    @GeneratedValue
     private Long id;
 
-    public Order(){
+
+    public ProductionOrder(){
     }
 
-    public Order(int identificationNumber, String description, int priority, String machineDescription) {
-        this.identificationNumber = identificationNumber;
+    public ProductionOrder(String description, int priority, String machineDescription) {
+
         this.description = description;
         this.priority = priority;
         this.machineDescription = machineDescription;
 
     }
 
-    public int getIdentificationNumber() {
-        return identificationNumber;
-    }
 
-    public void setIdentificationNumber(int identificationNumber) {
-        this.identificationNumber = identificationNumber;
-    }
 
     public String getDescription() {
         return description;
@@ -57,14 +54,13 @@ public class Order {
         this.machineDescription = machineDescription;
     }
 
-    @Id
-    @GeneratedValue
-    public Long getId() {
-        return id;
-    }
-
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public Long getId() {
+        return id;
     }
 }
