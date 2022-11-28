@@ -19,5 +19,6 @@
 	<modules>
 		<module>client</module>
 		<module>server</module>
-	</modules>
+        <module>password-hasher</module>
+    </modules>
 </project>

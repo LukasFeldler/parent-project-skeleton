@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,7 +14,12 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
-        final HttpClient client = HttpClient.newHttpClient();
+        final HttpClient client = HttpClient.newBuilder().authenticator(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthenticator(){
+                    return new PasswordAuthentication("worker","password".toCharArray());
+                }
+        }).build();
+
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/sortedOrders")).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
