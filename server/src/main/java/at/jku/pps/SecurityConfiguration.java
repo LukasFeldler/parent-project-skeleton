@@ -29,7 +29,7 @@ public class SecurityConfiguration {
         UserDetails manager = User.builder()
                 .username("manager")
                 .password("{bcrypt}" + "$2a$16$jlSfPHQCMYsC40mfeibi9eK0N7QTHivVbLBy4a66qyYJaPCImW9j6")
-                .roles("MANAGER")
+                .roles("PRODUCTIONMANAGER")
                 .build();
 
         return new InMemoryUserDetailsManager(worker, manager);
@@ -38,15 +38,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .mvcMatchers(HttpMethod.GET,"/orders").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/sortedOrders").permitAll()
-                .mvcMatchers(HttpMethod.POST,"/newOrderFirst").hasRole("MANAGER")
-                .mvcMatchers(HttpMethod.POST,"/newOrderLast").hasRole("MANAGER")
-                .mvcMatchers(HttpMethod.POST,"/newOrderAt").hasRole("MANAGER")
-                .mvcMatchers(HttpMethod.PUT,"/changeOrderDescription").permitAll()
-                .mvcMatchers(HttpMethod.PUT,"/changeOrderPriority").permitAll()
-                .mvcMatchers(HttpMethod.DELETE,"/deleteOrders").hasRole("MANAGER")
-                .mvcMatchers(HttpMethod.DELETE,"/deleteAllOrder").hasRole("MANAGER")
+                .mvcMatchers(HttpMethod.GET,"/orders").authenticated()
+                .mvcMatchers(HttpMethod.GET,"/sortedOrders").authenticated()
+                .mvcMatchers(HttpMethod.POST,"/newOrderFirst").hasRole("PRODUCTIONMANAGER")
+                .mvcMatchers(HttpMethod.POST,"/newOrderLast").hasRole("PRODUCTIONMANAGER")
+                .mvcMatchers(HttpMethod.POST,"/newOrderAt").hasRole("PRODUCTIONMANAGER")
+                .mvcMatchers(HttpMethod.PUT,"/changeOrderDescription").authenticated()
+                .mvcMatchers(HttpMethod.PUT,"/changeOrderPriority").authenticated()
+                .mvcMatchers(HttpMethod.DELETE,"/deleteOrders").hasRole("PRODUCTIONMANAGER")
+                .mvcMatchers(HttpMethod.DELETE,"/deleteAllOrder").hasRole("PRODUCTIONMANAGER")
         ).httpBasic(Customizer.withDefaults());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
