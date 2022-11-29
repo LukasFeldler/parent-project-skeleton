@@ -7,11 +7,33 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService (){
+
+        UserDetails worker = User.builder()
+                .username("worker")
+                .password("{bcrypt}" + "$2a$16$WTV6XOp59UhELSmHmmbUwuQ68ziOt4IFFtmRZg6R8OdLlsN327kL2")
+                .roles("WORKER")
+                .build();
+
+        UserDetails manager = User.builder()
+                .username("manager")
+                .password("{bcrypt}" + "$2a$16$/8X0enzAOPB8fx3FZDcOy.BA/cIs3LqzCNGOV9tntDS35OALmwwzW")
+                .roles("MANAGER")
+                .build();
+
+        return new InMemoryUserDetailsManager(worker, manager);
+    }
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
