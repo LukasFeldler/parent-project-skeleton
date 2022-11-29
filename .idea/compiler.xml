@@ -8,13 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="server" />
         <module name="client" />
-        <module name="password-hasher" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="11" />
       <module name="parent-project" target="11" />
-      <module name="password-hasher" target="17" />
+      <module name="password-hasher" target="16" />
       <module name="server" target="11" />
     </bytecodeTargetLevel>
   </component>

@@ -1,6 +1,6 @@
 package at.jku.pps;
 
-import org.aspectj.weaver.ast.Or;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

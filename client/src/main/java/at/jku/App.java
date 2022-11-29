@@ -10,14 +10,16 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
         final HttpClient client = HttpClient.newBuilder().authenticator(new Authenticator() {
-                protected PasswordAuthentication getPasswordAuthenticator(){
-                    return new PasswordAuthentication("worker","password".toCharArray());
-                }
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("productionManager","productionManager".toCharArray());
+            }
         }).build();
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/sortedOrders")).GET().build();
@@ -51,4 +53,7 @@ public class App {
         System.out.println(response);
         System.out.println(response.body());
     }
+
+
+
 }
